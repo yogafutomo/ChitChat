@@ -5,6 +5,8 @@
     <string name="UserGender">User Gender</string>
     <string name="Save">Save</string>
     <string name="Edit">Edit</string>
+    <string name="IncorrectAge">Umur Anda harus antara 18 sampai 99</string>
+    <string name="EnterAllData">Please enter all data</string>
     
     <string-array name="GenderList">
         <item>Male</item>
