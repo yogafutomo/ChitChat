@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ChitChat</string>
+    <string name="UserName">User Name</string>
+    <string name="UserAge">User Age</string>
+    <string name="UserGender">User Gender</string>
+    <string name="Save">Save</string>
+    <string name="Edit">Edit</string>
+    
+    <string-array name="GenderList">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    
+    <string-array name="menu">
+        <item>Profile</item>
+        <item>Group 1</item>
+        <item>Group 2</item>
+        <item>Group 3</item>
+        <item>One to one chats</item>
+        <item>Signout</item>
+    </string-array>
+
+
+
+
+</resources>
