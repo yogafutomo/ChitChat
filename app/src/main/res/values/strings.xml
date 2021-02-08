@@ -12,6 +12,11 @@
     <string name="Msghere">Type your message here</string>
     <string name="ErrorSave">One message saved</string>
     <string name="TranslationSettings">Translation Settings</string>
+    <string name="Translate">Translate: </string>
+    <string name="EnableTranslator">Enable translator</string>
+    <string name="From">From</string>
+    <string name="To">To</string>
+    <string name="Back">Back</string>
 
 
     
