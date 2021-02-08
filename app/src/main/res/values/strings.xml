@@ -11,6 +11,8 @@
     <string name="dataSaved">Data is saved successfully</string>
     <string name="Msghere">Type your message here</string>
     <string name="ErrorSave">One message saved</string>
+    <string name="TranslationSettings">Translation Settings</string>
+
 
     
     <string-array name="GenderList">
