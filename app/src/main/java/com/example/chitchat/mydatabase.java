@@ -1,5 +1,6 @@
 package com.example.chitchat;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,8 +26,19 @@ public class mydatabase extends SQLiteOpenHelper {
 
     public void profile(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS profile");
-        db.execSQL("CREATE TABLE profile");
+        db.execSQL("CREATE TABLE profile (id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT, userAGe TEXT, userGender TEXT)");
     }
+
+    boolean insertProfile(String userName, String userAge, String userGender) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("userName", userName);
+        cv.put("userAge", userAge);
+        cv.put("userGender", userGender);
+        result = db.insert("profile",null,cv);
+        return result != -1;
+    }
+
     public long getResult() {
         return result;
     }
@@ -34,7 +46,5 @@ public class mydatabase extends SQLiteOpenHelper {
     ArrayList<String> getProfile(String qry) {
     }
 
-    boolean insertProfile(String userName, String userAge, String userGender) {
 
-    }
 }
