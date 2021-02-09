@@ -17,8 +17,9 @@ public class mydatabase extends SQLiteOpenHelper {
         super(context, DBname, null, 1);
     }
 
+    @Override
     public void onCreate(SQLiteDatabase db){
-
+        profile(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
