@@ -40,10 +40,29 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     switch (position){
-                        case 0:
+                        case 0: {
                             Intent intent = new Intent(MainActivity.this, Profile.class);
                             startActivity(intent);
                             break;
+                        }
+                        case 1: {
+                            Intent intent = new Intent(MainActivity.this, Group.class);
+                            intent.putExtra("groupNumber", "1");
+                            startActivity(intent);
+                            break;
+                        }
+                        case 2: {
+                            Intent intent = new Intent(MainActivity.this, Group.class);
+                            intent.putExtra("groupNumber", "2");
+                            startActivity(intent);
+                            break;
+                        }
+                        case 3: {
+                            Intent intent = new Intent(MainActivity.this, Group.class);
+                            intent.putExtra("groupNumber", "3");
+                            startActivity(intent);
+                            break;
+                        }
                     }
                 }
             });
@@ -64,4 +83,3 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-}

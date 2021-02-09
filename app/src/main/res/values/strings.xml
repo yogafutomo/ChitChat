@@ -19,12 +19,11 @@
     <string name="Back">Back</string>
 
 
-    
     <string-array name="GenderList">
         <item>Male</item>
         <item>Female</item>
     </string-array>
-    
+
     <string-array name="menu">
         <item>Profile</item>
         <item>Group 1</item>
@@ -33,8 +32,6 @@
         <item>One to one chats</item>
         <item>Signout</item>
     </string-array>
-
-
 
 
 </resources>
