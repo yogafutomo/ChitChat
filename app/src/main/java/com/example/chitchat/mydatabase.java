@@ -2,6 +2,7 @@ package com.example.chitchat;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -39,12 +40,29 @@ public class mydatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
+
+
+    ArrayList<String> getProfile(String qry) {
+        ArrayList<String> profile = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            while (!res.isAfterLast()){
+                profile.add(res.getString(1));
+                profile.add(res.getString(2));
+                profile.add(res.getString(3));
+                res.moveToNext();
+            }
+            res.close();
+            return profile;
+        }else
+            profile.add("");
+        res.close();
+        return profile;
+    }
+
     public long getResult() {
         return result;
     }
-
-    ArrayList<String> getProfile(String qry) {
-    }
-
-
 }
