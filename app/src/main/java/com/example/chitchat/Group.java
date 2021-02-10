@@ -52,7 +52,13 @@ public class Group extends AppCompatActivity {
             String qry = "SELECT userName, userGender FROM profile ORDER BY id DESC LIMIT 1";
             profile = db.getProfileChat(qry);
 
+            lastmsg = db.getString("SELECT msgId FROM chat WHERE groupNumber ='" + groupNumber + "' ORDER BY id DESC LIMIT1");
+
+            getData();
+            getOnlineMsg();
+
         }catch (Exception e){
+            String functionName
 
         }
     }
