@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,11 +62,87 @@ public class Group extends AppCompatActivity {
             getOnlineMsg();
 
         }catch (Exception e){
-            String functionName
+            String functionName = Objects.requireNonNull(new Object(){
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()){
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getData(){
+        try {
+            String qry = "SELECT * FROM chat WHERE groupNumber = '" + groupNumber + "'";
+            offlineMessages = db.getMsg(qry);
+            if (offlineMessages.get(0).empty.matches("1"))
+                viewData();
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object(){
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()){
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void viewData() {
+        try {
+
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object(){
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()){
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
     }
 
     public void msgSend(View view) {
+    }
+
+
+    class Listadapter extends BaseAdapter{
+        @Override
+        public int getCount() {
+            return offlineMessages.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return offlineMessages.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            return null;
+        }
     }
 }

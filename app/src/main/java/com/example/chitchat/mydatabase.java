@@ -52,7 +52,18 @@ public class mydatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
-
+    boolean insertMsg(String msgId, String userName, String userId, String msg, String userGender, String groupNumber){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("msgId", msgId);
+        cv.put("userName", userName);
+        cv.put("userId", userId);
+        cv.put("msg", msg);
+        cv.put("userGender", userGender);
+        cv.put("groupNumber", groupNumber);
+        result = db.insert("chat", null,cv);
+        return result != -1;
+    }
 
     ArrayList<String> getProfile(String qry) {
         ArrayList<String> profile = new ArrayList<>();
@@ -96,6 +107,57 @@ public class mydatabase extends SQLiteOpenHelper {
         return profile;
     }
 
-    String getString(String s) {
+    ArrayList<msg_class> getMsg(String qry){
+        ArrayList<msg_class> msg = new ArrayList<>();
+        msg_class msgClass;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            while (!res.isAfterLast()){
+                String s1 = res.getString(1);
+                String s2 = res.getString(2);
+                String s3 = res.getString(3);
+                String s4 = res.getString(4);
+                String s5 = res.getString(5);
+                msgClass = new msg_class(s1, s2, s3, s4, s5, "0");
+                msg.add(msgClass);
+                res.moveToNext();
+            }
+            res.close();
+            return msg;
+        }else
+            msg.add(new msg_class("1"));
+        res.close();
+        return msg;
+    }
+
+    int getInteger(String qry){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        res.moveToFirst();
+        if (res.getCount() > 0){
+            int I1 = res.getInt(0);
+            res.close();
+            return I1;
+        }else {
+            res.close();
+            return - 1;
+        }
+    }
+
+    String getString(String qry) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        res.moveToNext();
+        int n = res.getCount();
+        if (n > 0){
+            String s1 = res.getString(0);
+            res.close();
+            return s1;
+        }else {
+            res.close();
+            return "";
+        }
     }
 }
