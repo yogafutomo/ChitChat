@@ -20,6 +20,8 @@ public class mydatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         profile(db);
+        user(db);
+        chat(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -29,6 +31,15 @@ public class mydatabase extends SQLiteOpenHelper {
     public void profile(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS profile");
         db.execSQL("CREATE TABLE profile (id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT, userAGe TEXT, userGender TEXT)");
+    }
+
+    private void user(SQLiteDatabase db){
+
+    }
+
+    private void chat(SQLiteDatabase db){
+        db.execSQL("DROP TABLE IF EXISTS chat");
+        db.execSQL("CREATE TABLE chat(id INTEGER PRIMARY KEY AUTOINCREMENT, msgId TEXT UNIQUE, userName TEXT, userId TEXT, msg TEXT, userGender TEXT, groupNumber TEXT)");
     }
 
     boolean insertProfile(String userName, String userAge, String userGender) {
@@ -65,5 +76,26 @@ public class mydatabase extends SQLiteOpenHelper {
 
     public long getResult() {
         return result;
+    }
+
+    ArrayList<String> getProfileChat(String qry) {
+        ArrayList<String> profile = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        if (res.getCount() > 0 ){
+            res.moveToFirst();
+            while (!res.isAfterLast()){
+                profile.add(res.getString(0));
+                profile.add(res.getString(1));
+            }
+            res.close();
+            return profile;
+        }else
+            profile.add("");
+        res.close();
+        return profile;
+    }
+
+    String getString(String s) {
     }
 }
