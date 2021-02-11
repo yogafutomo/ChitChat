@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -194,6 +195,47 @@ public class Group extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void oneToOne(int position){
+        try {
+            String id = offlineMessages.get(position).userId;
+            if (userId.matches(id))
+                goToOneToOne(position);
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object(){
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()){
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void goToOneToOne(int position){
+        try {
+            String id = offlineMessages.get(position).userId;
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object(){
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()){
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void msgSend(View view) {
         try {
             String msg = txt_msg.getText().toString().trim();
@@ -220,31 +262,35 @@ public class Group extends AppCompatActivity {
             String lineError = e.getStackTrace()[i].getLineNumber() + "";
             String msg = e.getMessage();
             error_class.sendError(myErrorRef, lineError, msg, functionName);
-            }
         }
     }
-
 
     class Listadapter extends BaseAdapter{
         @Override
         public int getCount() {
+
             return offlineMessages.size();
         }
 
         @Override
         public Object getItem(int position) {
+
             return offlineMessages.get(position);
         }
 
         @Override
         public long getItemId(int position) {
+
             return 0;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
 
             return null;
         }
     }
 }
+
+
