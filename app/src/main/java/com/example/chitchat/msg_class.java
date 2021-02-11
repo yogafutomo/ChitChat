@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class msg_class {
     public String msgId, userId, msg, UserGender, UserName, empty;
+    public String userName;
+    public String userGender;
 
     public msg_class(String empty){
         this.empty = empty;

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class Group extends AppCompatActivity {
@@ -112,8 +114,39 @@ public class Group extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void saveLocalDB(){
-
+        try {
+            String userName, userGender, userId, msgId, msg;
+            boolean result;
+            for (int i = 0; i < onlineMessages.size(); i++){
+                msgId = onlineMessages.get(i).msgId;
+                int id = db.getInteger("SELECT id FROM chat WHERE msgId = '" + msgId + "'");
+                if (id == -1) {
+                    userId = onlineMessages.get(i).userId;
+                    userName = onlineMessages.get(i).userName;
+                    userGender = onlineMessages.get(i).userGender;
+                    msg = onlineMessages.get(i).msg;
+                    result = db.insertMsg(msgId, userName, userId, msg, userGender, groupNumber);
+                    if (!result)
+                        Toast.makeText(this, getResources().getString(R.string.ErrorSave), Toast.LENGTH_LONG).show();
+                }
+            }
+            onlineMessages.clear();
+            getData();
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -142,8 +175,9 @@ public class Group extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void viewData() {
         try {
-
-
+            Listadapter listadapter = new Listadapter();
+            lst_Chat.setAdapter(listadapter);
+            lst_Chat.setSelection(listadapter.getCount() - 1);
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object(){
             }.getClass().getEnclosingMethod()).getName();
@@ -159,7 +193,35 @@ public class Group extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void msgSend(View view) {
+        try {
+            String msg = txt_msg.getText().toString().trim();
+            String userName = profile.get(0);
+            String userGender = profile.get(1);
+            String key = myRef.child("groups").child(groupNumber).push().getKey();
+            msg_class msgClass = new msg_class(key, userName, userId, msg, userGender);
+            Map<String, Object> map = msgClass.toMap();
+            assert key != null;
+            myRef.child("groups").child(groupNumber).child(key).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    txt_msg.setText("");
+                }
+            });
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++; }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+            }
+        }
     }
 
 
