@@ -1,5 +1,6 @@
 package com.example.chitchat;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -74,6 +75,45 @@ public class Group extends AppCompatActivity {
             String msg = e.getMessage();
             error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getOnlineMsg(){
+        try {
+            myRef.child("groups").child(groupNumber).orderByKey().startAt(lastmsg).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot singleSnapshot : snapshot.getChildren()){
+                        onlineMessages.add(singleSnapshot.getValue(msg_class.class));
+                    }
+
+                    if (onlineMessages.size() > 0){
+                        saveLocalDB();
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    private void saveLocalDB(){
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
