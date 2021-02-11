@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -219,7 +221,11 @@ public class Group extends AppCompatActivity {
     private void goToOneToOne(int position){
         try {
             String id = offlineMessages.get(position).userId;
-
+            String name = offlineMessages.get(position).userName;
+            Intent intent = new Intent(this, OneToOne.class);
+            intent.putExtra("id", id);
+            intent.putExtra("name", name);
+            startActivity(intent);
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object(){
             }.getClass().getEnclosingMethod()).getName();
@@ -287,8 +293,45 @@ public class Group extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
+            convertView = inflater.inflate(R.layout.chat_adapter, parent, false);
 
-            return null;
+            TextView txt_partner_msg = convertView.findViewById(R.id.txt_partner_msg);
+            TextView txt_partnerName = convertView.findViewById(R.id.txt_partnerName);
+
+            TextView my_msg = convertView.findViewById(R.id.my_msg);
+            TextView txt_myName = convertView.findViewById(R.id.txt_myName);
+
+            LinearLayout partner_layout = convertView.findViewById(R.id.partner_layout);
+            LinearLayout my_layout = convertView.findViewById(R.id.my_layout);
+
+            String g;
+            if (offlineMessages.get(position).userGender.matches("Male"))
+                g = " ,M";
+            else
+                g = " ,F";
+
+            if (offlineMessages.get(position).userId.matches(userId)){
+                my_msg.setText(offlineMessages.get(position).msg);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) partner_layout.getLayoutParams();
+                layoutParams.height = 0;
+                partner_layout.setLayoutParams(layoutParams);
+                txt_myName.setText(offlineMessages.get(position).userName + g);
+            }else {
+                txt_partner_msg.setText(offlineMessages.get(position).msg);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) partner_layout.getLayoutParams();
+                layoutParams.height = 0;
+                my_layout.setLayoutParams(layoutParams);
+                txt_partnerName.setText(offlineMessages.get(position).userName + g);
+            }
+
+            txt_partnerName.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void onClick(View v) {
+                    oneToOne(position);
+                }
+            });
+            return convertView;
         }
     }
 }
