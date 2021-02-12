@@ -77,8 +77,77 @@ public class OneToOne extends AppCompatActivity {
             getOnlineMsg();
 
         }catch (Exception e){
-
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getData(){
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void viewData(){
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getOnlineMsg(){
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+
     }
 
     public void translationS(View view) {
