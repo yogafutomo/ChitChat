@@ -3,6 +3,8 @@ package com.example.chitchat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Objects;
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class OneToOne extends AppCompatActivity {
 
     private static final String activityName = "OneToOne";
@@ -94,7 +97,10 @@ public class OneToOne extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getData(){
         try {
-
+            String qry = "SELECT * FROM chat WHERE groupNumber ='" + chatRoomId + "'";
+            offlineMessages = db.getMsg(qry);
+            if (!offlineMessages.get(0).empty.matches("1"))
+                viewData();
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -114,7 +120,9 @@ public class OneToOne extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void viewData(){
         try {
-
+            Listadapter listadapter = new Listadapter();
+            Lst_Chat.setAdapter(listadapter);
+            Lst_Chat.setSelection(listadapter.getCount() - 1);
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -150,12 +158,118 @@ public class OneToOne extends AppCompatActivity {
 
     }
 
+    private void saveLocalDB(){
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    private void translate(){
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
     public void translationS(View view) {
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
     }
 
     public void back(View view) {
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
     }
 
     public void msgSend(View view) {
+        try {
+
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    class Listadapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+
+            return offlineMessages.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+
+            return offlineMessages.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            return null;
+        }
     }
 }
