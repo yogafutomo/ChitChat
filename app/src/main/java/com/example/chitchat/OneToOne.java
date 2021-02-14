@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -178,7 +179,25 @@ public class OneToOne extends AppCompatActivity {
 
     private void saveLocalDB(){
         try {
-
+            String userName, userGender, userId, msgId, msg;
+            boolean result;
+            for (int i = 0; i < onlineMessages.size(); i++){
+                msgId = onlineMessages.get(i).msgId;
+                int id = db.getInteger("SELECT id FROM chat WHERE msgId ='" + msgId + "'");
+                if (id == -1){
+                    userId = onlineMessages.get(i).userId;
+                    userName = onlineMessages.get(i).userName;
+                    userGender = onlineMessages.get(i).userGender;
+                    msg = onlineMessages.get(i).msg;
+                    result = db.insertMsg(msgId, userName, userId, msg, userGender, chatRoomId);
+                    if (!result)
+                        Toast.makeText(this, getResources().getString(R.string.ErrorSave), Toast.LENGTH_LONG).show();
+                    String qry = "REPLACE INTO partners(roomId, partner) VALUES('" + chatRoomId + "','" + partnerName + "')";
+                    db.insertPartner(qry);
+                }
+            }
+            onlineMessages.clear();
+            getData();
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();

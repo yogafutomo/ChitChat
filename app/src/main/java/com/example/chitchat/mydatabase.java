@@ -42,6 +42,11 @@ public class mydatabase extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE chat(id INTEGER PRIMARY KEY AUTOINCREMENT, msgId TEXT UNIQUE, userName TEXT, userId TEXT, msg TEXT, userGender TEXT, groupNumber TEXT)");
     }
 
+    void insertPartner(String qry){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(qry);
+    }
+
     boolean insertProfile(String userName, String userAge, String userGender) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
