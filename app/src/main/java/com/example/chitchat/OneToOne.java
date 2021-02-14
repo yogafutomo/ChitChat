@@ -12,11 +12,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -141,7 +145,21 @@ public class OneToOne extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getOnlineMsg(){
         try {
+            myRef.child("oneToOne").child(chatRoomId).orderByKey().startAt(lastmsg).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot singleSnapshot : snapshot.getChildren())
+                        onlineMessages.add(singleSnapshot.getValue(msg_class.class));
 
+                    if (onlineMessages.size() > 0)
+                        saveLocalDB();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
