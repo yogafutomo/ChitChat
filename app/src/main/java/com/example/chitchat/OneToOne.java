@@ -233,7 +233,13 @@ public class OneToOne extends AppCompatActivity {
 
     public void translationS(View view) {
         try {
-
+            if (layout_translateSettings.getVisibility() == View.VISIBLE){
+                layout_translateSettings.setVisibility(View.GONE);
+                Lst_Chat.setVisibility(View.VISIBLE);
+            }else {
+                layout_translateSettings.setVisibility(View.VISIBLE);
+                Lst_Chat.setVisibility(View.GONE);
+            }
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -270,6 +276,28 @@ public class OneToOne extends AppCompatActivity {
     public void msgSend(View view) {
         try {
 
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
+
+    private void getLangs(){
+        try {
+            int s, t ;
+            s = spnr_from.getSelectedItemPosition();
+            t = spnr_to.getSelectedItemPosition();
+            sourceLanguage = lang[s];
+            targetLanguage = lang[t];
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
