@@ -17,13 +17,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.mlkit.common.model.DownloadConditions;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -215,7 +222,99 @@ public class OneToOne extends AppCompatActivity {
 
     private void translate(){
         try {
+            TranslatorOptions options =
+                    new TranslatorOptions.Builder()
+                            .setSourceLanguage(sourceLanguage)
+                            .setTargetLanguage(targetLanguage)
+                            .build();
+            final Translator translator =
+                    Translation.getClient(options);
+            DownloadConditions conditions = new DownloadConditions.Builder()
+                    .requireWifi()
+                    .build();
+            translator.downloadModelIfNeeded(conditions)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void v) {
+                                    translator.translate(txt_msg.getText().toString().trim())
+                                            .addOnSuccessListener(
+                                                    new OnSuccessListener<String>() {
+                                                        @Override
+                                                        public void onSuccess(@NonNull String translatedText) {
+                                                            txt_msg.setText(translatedText);
+                                                            _msgSend();
+                                                        }
+                                                    })
+                                            .addOnFailureListener(
+                                                    new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            String functionName = Objects.requireNonNull(new Object(){
+                                                            }.getClass().getEnclosingMethod()).getName();
+                                                            int i = 0;
+                                                            for (StackTraceElement ste : e.getStackTrace()){
+                                                                if (ste.getClassName().contains(activityName))
+                                                                    break;
+                                                                i++;
+                                                            }
+                                                            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+                                                            String msg = e.getMessage();
+                                                            error_class.sendError(myErrorRef, lineError, msg, functionName);
+                                                        }
+                                                    });
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    String functionName = Objects.requireNonNull(new Object(){
+                                    }.getClass().getEnclosingMethod()).getName();
+                                    int i = 0;
+                                    for (StackTraceElement ste : e.getStackTrace()) {
+                                        if (ste.getClassName().contains(activityName))
+                                            break;
+                                        i++;
+                                    }
+                                    String lineError = e.getStackTrace()[i].getLineNumber() + "";
+                                    String msg = e.getMessage();
+                                    error_class.sendError(myErrorRef, lineError, msg, functionName);
+                                }
+                            });
+        }catch (Exception e){
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
+        }
+    }
 
+    private void _msgSend(){
+        try {
+            String msg = txt_msg.getText().toString().trim();
+            String userName = profile.get(0);
+            final String userGender = profile.get(1);
+            String key = myRef.child("oneToOne").child(chatRoomId).push().getKey();
+            msg_class msgClass = new msg_class(key, userName, userId, msg, userGender);
+            Map<String, Object> map = msgClass.toMap();
+            assert key != null;
+            myRef.child("oneToOne").child(chatRoomId).child(key).setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    txt_msg.setText("");
+                    String key = myRef.child("oneToOneRooms").child(partnerId).child(userId).push().getKey();
+                    myRef.child("oneToOneRooms").child(partnerId).child(userId).setValue(key);
+                    myRef.child("oneToOneRooms").child(userId).child(partnerId).setValue(key);
+                }
+            });
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -257,7 +356,8 @@ public class OneToOne extends AppCompatActivity {
 
     public void back(View view) {
         try {
-
+            layout_translateSettings.setVisibility(View.GONE);
+            Lst_Chat.setVisibility(View.VISIBLE);
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -275,7 +375,11 @@ public class OneToOne extends AppCompatActivity {
 
     public void msgSend(View view) {
         try {
-
+            if (cb_enableT.isChecked()){
+                getLangs();
+                translate();
+            }else
+                _msgSend();
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
