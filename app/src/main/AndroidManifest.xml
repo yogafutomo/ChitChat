@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OneToOne"></activity>
+        <activity android:name=".OneToOneChats"></activity>
+        <activity android:name=".OneToOne" />
         <activity android:name=".Group" />
         <activity android:name=".Profile" />
         <activity android:name=".MainActivity">
