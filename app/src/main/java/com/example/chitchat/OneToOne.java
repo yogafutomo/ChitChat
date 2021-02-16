@@ -56,7 +56,7 @@ public class OneToOne extends AppCompatActivity {
     private String lastmsg, chatRoomId, userId, partnerId, partnerName, sourceLanguage, targetLanguage;
     private String[] lang;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +106,7 @@ public class OneToOne extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     private void getData(){
         try {
             String qry = "SELECT * FROM chat WHERE groupNumber ='" + chatRoomId + "'";
@@ -129,7 +129,6 @@ public class OneToOne extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void viewData(){
         try {
             Listadapter listadapter = new Listadapter();
@@ -150,7 +149,6 @@ public class OneToOne extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getOnlineMsg(){
         try {
             myRef.child("oneToOne").child(chatRoomId).orderByKey().startAt(lastmsg).addValueEventListener(new ValueEventListener() {
@@ -317,11 +315,11 @@ public class OneToOne extends AppCompatActivity {
             });
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
-            }.getClass().getEnclosingMethod()).getName();
-            int i = 0;
-            for (StackTraceElement ste : e.getStackTrace()) {
-                if (ste.getClassName().contains(activityName))
-                    break;
+                }.getClass().getEnclosingMethod()).getName();
+                int i = 0;
+                for (StackTraceElement ste : e.getStackTrace()) {
+                    if (ste.getClassName().contains(activityName))
+                        break;
                 i++;
             }
             String lineError = e.getStackTrace()[i].getLineNumber() + "";
