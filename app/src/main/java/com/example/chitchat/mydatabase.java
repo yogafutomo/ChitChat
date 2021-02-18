@@ -165,4 +165,46 @@ public class mydatabase extends SQLiteOpenHelper {
             return "";
         }
     }
+
+    ArrayList<String> getOneToOneChats(String allConversation_qry) {
+        ArrayList<String> groupNumber = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(allConversation_qry,null);
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            while (!res.isAfterLast()){
+                groupNumber.add(res.getString(0));
+                res.moveToNext();
+            }
+            res.close();
+            return groupNumber;
+        }
+        else
+            groupNumber.add("");
+        res.close();
+        return groupNumber;
+    }
+
+    msg_class getLastMsg(String qry) {
+        msg_class msgClass = new msg_class();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(qry, null);
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            while (!res.isAfterLast()){
+                String s1 = res.getString(1);
+                String s2 = res.getString(2);
+                String s3 = res.getString(3);
+                String s4 = res.getString(4);
+                String s5 = res.getString(5);
+                msgClass = new msg_class(s1, s2, s3, s4, s5, "0");
+                res.moveToNext();
+            }
+            res.close();
+            return msgClass;
+        }else
+            msgClass = new msg_class("1");
+        res.close();
+        return msgClass;
+    }
 }

@@ -10,8 +10,19 @@ public class msg_class {
     public String userName;
     public String userGender;
 
+    public msg_class() {
+    }
+
     public msg_class(String empty){
         this.empty = empty;
+    }
+
+    public msg_class(String msgId, String userName, String userId, String msg, String userGender) {
+        this.msgId = msgId;
+        this.userId = userId;
+        this.msg = msg;
+        this.userGender = userGender;
+        this.userName = userName;
     }
 
     public msg_class(String msgId, String userId, String msg, String userGender, String userName, String empty) {
@@ -23,8 +34,6 @@ public class msg_class {
         this.empty = empty;
     }
 
-    public msg_class(String msgId, String userId, String msg, String userGender, String userName){
-    }
 
     @Exclude
     Map<String, Object> toMap(){

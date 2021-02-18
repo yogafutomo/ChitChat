@@ -233,6 +233,7 @@ public class OneToOneChats extends AppCompatActivity {
             a_lastMsg.clear();
             ArrayList<String> a_oneToOneChats = db.getOneToOneChats(allConversation_qry);
             if (a_oneToOneChats.get(0).length() > 0) {
+                String partnerId, partnerName_qry;
                 for (int i = 0; i < a_oneToOneChats.size(); i++) {
                     partnerId = a_oneToOneChats.get(i).replace(userId, "");
                     partnerId = partnerId.replace("-", "");
