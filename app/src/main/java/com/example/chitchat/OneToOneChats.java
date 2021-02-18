@@ -8,11 +8,15 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -34,6 +38,7 @@ public class OneToOneChats extends AppCompatActivity {
     private ArrayList<String> a_partnersId = new ArrayList<>();
     private ArrayList<msg_class> a_lastMsg = new ArrayList<>();
     private ArrayList<msg_class> a_onlineMsgs = new ArrayList<>();
+    private ArrayList<String> a_roomsKey = new ArrayList<>();
 
     private String userId;
     private int index;
@@ -74,7 +79,21 @@ public class OneToOneChats extends AppCompatActivity {
 
     private void getRoomsKey(){
         try {
+            myRef.child("oneToOneRooms").child(userId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot singleSnapshot : snapshot.getChildren())
+                        a_roomsKey.add(singleSnapshot.getKey());
 
+                    if (a_roomsKey.size() > 0)
+                        _getsRoomKeys();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
             }.getClass().getEnclosingMethod()).getName();
@@ -94,7 +113,17 @@ public class OneToOneChats extends AppCompatActivity {
         try {
 
         }catch (Exception e){
-
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
     }
 
@@ -102,7 +131,17 @@ public class OneToOneChats extends AppCompatActivity {
         try {
 
         }catch (Exception e){
-
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
     }
 
@@ -110,7 +149,17 @@ public class OneToOneChats extends AppCompatActivity {
         try {
 
         }catch (Exception e){
-
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
     }
 
@@ -118,7 +167,17 @@ public class OneToOneChats extends AppCompatActivity {
         try {
 
         }catch (Exception e){
-
+            String functionName = Objects.requireNonNull(new Object() {
+            }.getClass().getEnclosingMethod()).getName();
+            int i = 0;
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().contains(activityName))
+                    break;
+                i++;
+            }
+            String lineError = e.getStackTrace()[i].getLineNumber() + "";
+            String msg = e.getMessage();
+            error_class.sendError(myErrorRef, lineError, msg, functionName);
         }
     }
 
