@@ -157,7 +157,7 @@
         <item>cy</item>
     </string-array>
 
-    <string name="loading" translatable="false">Loading…</string>
+    <string name="Loading" translatable="false">Loading…</string>
     <dimen name="title_bottom_margin">16dp</dimen>
     <string name="google_title_text" translatable="false">Google Sign In</string>
     <string name="signed_out">Signed Out</string>
