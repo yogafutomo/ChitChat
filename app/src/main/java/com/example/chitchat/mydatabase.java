@@ -207,4 +207,10 @@ public class mydatabase extends SQLiteOpenHelper {
         res.close();
         return msgClass;
     }
+
+    boolean insertId(String uid, String email) {
+    }
+
+    void dropTables() {
+    }
 }
