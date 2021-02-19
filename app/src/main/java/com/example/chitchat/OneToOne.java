@@ -2,6 +2,7 @@ package com.example.chitchat;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -197,7 +198,7 @@ public class OneToOne extends AppCompatActivity {
                     result = db.insertMsg(msgId, userName, userId, msg, userGender, chatRoomId);
                     if (!result)
                         Toast.makeText(this, getResources().getString(R.string.ErrorSave), Toast.LENGTH_LONG).show();
-                    String qry = "REPLACE INTO partners(roomId, partner) VALUES('" + chatRoomId + "','" + partnerName + "')";
+                    String qry = "REPLACE INTO partner(roomId, partner) VALUES('" + chatRoomId + "','" + partnerName + "')";
                     db.insertPartner(qry);
                 }
             }
@@ -435,8 +436,34 @@ public class OneToOne extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            convertView = inflater.inflate(R.layout.chat_adapter, parent, false);
+            TextView partner_msg = convertView.findViewById(R.id.txt_partner_msg);
+            TextView txt_partnerName = convertView.findViewById(R.id.txt_partnerName);
+            TextView my_msg = convertView.findViewById(R.id.my_msg);
+            TextView txt_myName = convertView.findViewById(R.id.txt_myName);
+            LinearLayout partner_layout = convertView.findViewById(R.id.partner_layout);
+            LinearLayout my_layout = convertView.findViewById(R.id.my_layout);
+            String g;
+
+            if (offlineMessages.get(position).userGender.matches("Male"))
+                g = " ,M";
+            else
+                g = " ,F";
+
+            if (offlineMessages.get(position).userId.matches(userId)) {
+                my_msg.setText(offlineMessages.get(position).msg);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) partner_layout.getLayoutParams();
+                layoutParams.height = 0; partner_layout.setLayoutParams(layoutParams);
+                txt_myName.setText(offlineMessages.get(position).userName + g);
+            } else {
+                partner_msg.setText(offlineMessages.get(position).msg);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) my_layout.getLayoutParams();
+                layoutParams.height = 0; my_layout.setLayoutParams(layoutParams);
+                txt_partnerName.setText(offlineMessages.get(position).userName + g);
+            }
+            return convertView;
         }
     }
 }

@@ -3,12 +3,14 @@ package com.example.chitchat;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -323,8 +325,16 @@ public class OneToOneChats extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            convertView = inflater.inflate(R.layout.one_to_one_list_adapter, parent, false);
+            TextView lastMsg = convertView.findViewById(R.id.txt_lastMsg);
+            TextView txt_partnerName = convertView.findViewById(R.id.txt_partnerName);
+            txt_partnerName.setText(a_partnersName.get(position));
+            String s = ""; if (a_lastMsg.get(position).userId.matches(userId)) s = "you: ";
+            lastMsg.setText(s + a_lastMsg.get(position).msg);
+
+            return convertView;
         }
     }
 }

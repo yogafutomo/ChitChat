@@ -22,6 +22,7 @@ public class mydatabase extends SQLiteOpenHelper {
         profile(db);
         user(db);
         chat(db);
+        partners(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -31,6 +32,11 @@ public class mydatabase extends SQLiteOpenHelper {
     public void profile(SQLiteDatabase db){
         db.execSQL("DROP TABLE IF EXISTS profile");
         db.execSQL("CREATE TABLE profile (id INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT, userAGe TEXT, userGender TEXT)");
+    }
+
+    private void partners(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS partners");
+        db.execSQL("create table partners (roomId TEXT PRIMARY KEY, partner TEXT)");
     }
 
     private void user(SQLiteDatabase db){
@@ -103,6 +109,7 @@ public class mydatabase extends SQLiteOpenHelper {
             while (!res.isAfterLast()){
                 profile.add(res.getString(0));
                 profile.add(res.getString(1));
+                res.moveToNext();
             }
             res.close();
             return profile;
@@ -187,7 +194,7 @@ public class mydatabase extends SQLiteOpenHelper {
 
     msg_class getLastMsg(String qry) {
         msg_class msgClass = new msg_class();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery(qry, null);
         if (res.getCount() > 0){
             res.moveToFirst();
@@ -208,9 +215,22 @@ public class mydatabase extends SQLiteOpenHelper {
         return msgClass;
     }
 
-    boolean insertId(String uid, String email) {
+    boolean insertId(String user_id, String user_email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("user_id", user_id);
+        cv.put("user_email", user_email);
+        result = db.insert("user", null, cv);
+        return result != -1;
     }
 
     void dropTables() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        profile(db);
+        chat(db);
+        user(db);
+        partners(db);
     }
+
+
 }

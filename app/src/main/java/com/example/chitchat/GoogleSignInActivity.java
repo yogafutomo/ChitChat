@@ -40,7 +40,7 @@ public class GoogleSignInActivity extends BaseActivity implements View.OnClickLi
 
     private FirebaseAuth mAuth;
 
-    private GoogleSignInClient mGoogleSignClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
@@ -62,7 +62,7 @@ public class GoogleSignInActivity extends BaseActivity implements View.OnClickLi
                     .requestEmail()
                     .build();
 
-            mGoogleSignClient = GoogleSignIn.getClient(this, gso);
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
             mAuth = FirebaseAuth.getInstance();
         }catch (Exception e){
@@ -127,10 +127,10 @@ public class GoogleSignInActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acnt){
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         try {
             showProgressDialog();
-            AuthCredential credential = GoogleAuthProvider.getCredential(acnt.getIdToken(), null);
+            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
             mAuth.signInWithCredential(credential)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -139,7 +139,7 @@ public class GoogleSignInActivity extends BaseActivity implements View.OnClickLi
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 updateUI(user);
                             }else {
-                                Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(R.id.my_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                                 updateUI(null);
                             }
                             hideProgressDialog();
@@ -162,7 +162,7 @@ public class GoogleSignInActivity extends BaseActivity implements View.OnClickLi
 
     private void signIn(){
         try {
-            Intent signInIntent = mGoogleSignClient.getSignInIntent();
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
         }catch (Exception e){
             String functionName = Objects.requireNonNull(new Object() {
