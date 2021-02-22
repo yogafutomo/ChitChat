@@ -1,2 +1,3 @@
 # ChitChat
-Chat App
+
+Chat App Example
